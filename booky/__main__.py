@@ -110,7 +110,11 @@ def main():
     args = parser.parse_args()
 
     try:
-        return args.func(args)
+        if 'func' in args:
+            return args.func(args)
+        else:
+            parser.print_help()
+            return 1
     except Exception as e:
         print(e, file=sys.stderr)
         return 1
