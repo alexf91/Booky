@@ -13,7 +13,7 @@ To be able to change directories, a wrapper function around Booky is required.
 ### bash and zsh
 
 ```bash
-function bookyrs {
+function booky-cd {
     # Restore a directory from booky
     if [ $# != 1 ]; then
         return 1
@@ -25,15 +25,6 @@ function bookyrs {
     fi
 
     cd $DIR
-}
-
-function bookysv {
-    # The current directory to booky
-    if [ $# != 1 ]; then
-        return 1
-    fi
-
-    booky add $1
 }
 ```
 
