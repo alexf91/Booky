@@ -22,6 +22,9 @@ import pickle
 from collections import OrderedDict
 
 
+LASTKEY = 'b07647bf409c327a'
+
+
 def load_bookmarks(path):
     """Load the bookmarks from a file."""
     try:
@@ -41,7 +44,8 @@ def command_list(args):
     """List all available bookmarks."""
     bookmarks = load_bookmarks(args.bookyfile)
     for name, value in bookmarks.items():
-        print('{:<20}{:<}'.format(name, value))
+        if name != LASTKEY:
+            print('{:<20}{:<}'.format(name, value))
 
     return 0
 
@@ -51,6 +55,7 @@ def command_add(args):
     bookmarks = load_bookmarks(args.bookyfile)
     path = args.path or os.getcwd()
     bookmarks[args.name] = path
+    bookmarks[LASTKEY] = path
     save_bookmarks(args.bookyfile, bookmarks)
     return 0
 
@@ -70,11 +75,15 @@ def command_delete(args):
 def command_get(args):
     """Get a bookmark."""
     bookmarks = load_bookmarks(args.bookyfile)
-    if args.name in bookmarks:
-        print(bookmarks[args.name])
+    name = args.name or LASTKEY
+    if name in bookmarks:
+        path = bookmarks[name]
+        bookmarks[LASTKEY] = path
+        save_bookmarks(args.bookyfile, bookmarks)
+        print(path)
         return 0
     else:
-        print('Bookmark "%s" not found.' % args.name, file=sys.stderr)
+        print('Bookmark "%s" not found.' % name, file=sys.stderr)
         return 1
 
 
@@ -104,7 +113,7 @@ def main():
 
     # Parser for the 'get' command
     parser_get = subparsers.add_parser('get', help='get the path for a name')
-    parser_get.add_argument('name', help='name of the bookmark')
+    parser_get.add_argument('name', nargs='?', help='name of the bookmark')
     parser_get.set_defaults(func=command_get)
 
     args = parser.parse_args()

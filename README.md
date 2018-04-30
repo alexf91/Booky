@@ -15,7 +15,7 @@ To be able to change directories, a wrapper function around Booky is required.
 ```bash
 function booky-cd {
     # Restore a directory from booky
-    if [ $# != 1 ]; then
+    if [ $# -gt 1 ]; then
         return 1
     fi
 
