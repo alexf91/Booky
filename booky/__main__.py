@@ -43,9 +43,10 @@ def save_bookmarks(path, bookmarks):
 def command_list(args):
     """List all available bookmarks."""
     bookmarks = load_bookmarks(args.bookyfile)
+    formatstr = '{:<20}{:<}' if not args.m else '{}:{}'
     for name, value in bookmarks.items():
         if name != LASTKEY:
-            print('{:<20}{:<}'.format(name, value))
+            print(formatstr.format(name, value))
 
     return 0
 
@@ -99,6 +100,7 @@ def main():
     # Parser for the 'list' command
     parser_list = subparsers.add_parser('list', help='list saved bookmarks')
     parser_list.set_defaults(func=command_list)
+    parser_list.add_argument('-m', action='store_true', help=argparse.SUPPRESS)  # Machine readable
 
     # Parser for the 'add' command
     parser_add = subparsers.add_parser('add', help='add a bookmark')

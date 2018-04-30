@@ -10,10 +10,13 @@ on the Python standard library.
 
 To be able to change directories, a wrapper function around Booky is required.
 
-### bash and zsh
+### zsh completion
 
-```bash
-function booky-cd {
+```zsh
+# Wrappers for booky
+alias booky='python -m booky'
+
+function bcd() {
     # Restore a directory from booky
     if [ $# -gt 1 ]; then
         return 1
@@ -26,6 +29,15 @@ function booky-cd {
 
     cd $DIR
 }
+
+# Completion for bcd
+function _bcd() {
+    local bookmarks
+    bookmarks=("${(@f)$(python -m booky list -m)}")
+    _describe 'bookmark' bookmarks
+}
+setopt complete_aliases
+compdef _bcd bcd
 ```
 
 ## Notes
