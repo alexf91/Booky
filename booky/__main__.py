@@ -15,10 +15,11 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import print_function
 import argparse
 import os
 import sys
-import pickle
+import json
 from collections import OrderedDict
 
 
@@ -28,16 +29,16 @@ LASTKEY = 'b07647bf409c327a'
 def load_bookmarks(path):
     """Load the bookmarks from a file."""
     try:
-        with open(path, 'rb') as fp:
-            return pickle.load(fp)
-    except FileNotFoundError:
+        with open(path, 'r') as fp:
+            return json.load(fp, object_pairs_hook=OrderedDict)
+    except IOError:
         return OrderedDict()
 
 
 def save_bookmarks(path, bookmarks):
     """Save the bookmarks to a file."""
-    with open(path, 'wb') as fp:
-        return pickle.dump(bookmarks, fp)
+    with open(path, 'w') as fp:
+        return json.dump(bookmarks, fp, indent=4)
 
 
 def command_list(args):
