@@ -3,8 +3,7 @@
 A simple bookmark manager for the command line.
 
 There are several more powerful alternatives, but it's not always possible to
-install them. Booky is contained in a single Python file and only depends
-on the Python standard library.
+install them. Booky only depends on the Python standard library.
 
 ## Setup
 
